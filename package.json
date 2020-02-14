@@ -1,6 +1,6 @@
 {
   "name": "wdio-wdiov5testrail-reporter",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "TestRail reporter for WebdriverIO v5",
   "main": "src/index.js",
   "scripts": {
@@ -24,5 +24,13 @@
     "eslint-plugin-jsx-a11y": "^6.0.3",
     "eslint-plugin-react": "^7.7.0",
     "sync-request": "^6.1.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/billylam/wdio-wdiov5testrail-reporter.git"
+  },
+  "bugs": {
+    "url": "https://github.com/billylam/wdio-wdiov5testrail-reporter/issues"
+  },
+  "homepage": "https://github.com/billylam/wdio-wdiov5testrail-reporter#readme"
 }

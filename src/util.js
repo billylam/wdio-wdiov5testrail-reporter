@@ -79,4 +79,6 @@ module.exports.cleanup = function cleanup(config) {
     },
   });
   if (response.statusCode >= 300) console.error(response.getBody());
+
+  return options.runId;
 };

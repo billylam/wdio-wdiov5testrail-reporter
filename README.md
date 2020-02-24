@@ -22,7 +22,7 @@ const testrailUtil = require('wdio-wdiov5testrail-reporter/lib');
 
 ```
   onComplete: (exitCode, conf, capabilities, results) => {
-    testrailUtil.cleanup(conf);
+    testrailUtil.cleanup(conf); // This method returns the run id used
   },
 ```
 

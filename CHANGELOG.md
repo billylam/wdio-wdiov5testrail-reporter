@@ -1,3 +1,7 @@
+### 1.0.7 (2020-02-26)
+
+* Always delete temp folder (potential stale / invalid results)
+
 ### 1.0.6 (2020-02-24)
 
 * return run id from cleanup method

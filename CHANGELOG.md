@@ -1,4 +1,4 @@
-### 1.0.7 (2020-02-26)
+### 1.0.8 (2020-02-26)
 
 * Always delete temp folder (potential stale / invalid results)
 

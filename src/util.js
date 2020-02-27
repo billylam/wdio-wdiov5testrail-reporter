@@ -5,10 +5,8 @@ const request = require('sync-request');
 
 module.exports.startup = function startup() {
   try {
-    if (!fs.existsSync('./testrailResults')) {
-      del.sync('./testrailResults');
-      fs.mkdirSync('./testrailResults');
-    }
+    if (fs.existsSync('./testrailResults')) del.sync('./testrailResults');
+    fs.mkdirSync('./testrailResults');
   } catch (e) { console.log(e); }
 };
 

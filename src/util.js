@@ -5,11 +5,13 @@ const request = require('sync-request');
 
 module.exports.startup = function startup() {
   try {
-    if (fs.existsSync('./testrailResults')) del.sync('./testrailResults');
-    fs.mkdirSync('./testrailResults');
+    if (!fs.existsSync('./testrailResults')) fs.mkdirSync('./testrailResults');
   } catch (e) { console.log(e); }
-};
 
+  process.on('SIGINT', () => {
+    if (fs.existsSync('./testrailResults')) del.sync('./testrailResults');
+  });
+};
 module.exports.cleanup = function cleanup(config) {
   const files = fs.readdirSync('./testrailResults');
   const results = [];

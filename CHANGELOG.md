@@ -1,3 +1,7 @@
+### 1.0.9 (2020-02-27)
+
+* Previous commits didn't properly account for SIGINT
+
 ### 1.0.8 (2020-02-26)
 
 * Always delete temp folder (potential stale / invalid results)

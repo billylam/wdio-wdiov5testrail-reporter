@@ -1,3 +1,7 @@
+### 1.0.10 (2020-03-02)
+
+* Account for TestRail not accepting 0s run times (skipped tests)
+
 ### 1.0.9 (2020-02-27)
 
 * Previous commits didn't properly account for SIGINT

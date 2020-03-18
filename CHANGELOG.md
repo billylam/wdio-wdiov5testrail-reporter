@@ -1,3 +1,7 @@
+### 1.0.10 (2020-03-18)
+
+* Fix minimist vulnerability (https://npmjs.com/advisories/1179)
+
 ### 1.0.10 (2020-03-02)
 
 * Account for TestRail not accepting 0s run times (skipped tests)

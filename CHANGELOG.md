@@ -1,4 +1,8 @@
-### 1.0.10 (2020-03-18)
+### 1.0.12 (2020-03-25)
+
+* Merge PR for closeTestRailRun option (Thanks [@nemanjajeremic](https://github.com/nemanjajeremic))
+
+### 1.0.11 (2020-03-18)
 
 * Fix minimist vulnerability (https://npmjs.com/advisories/1179)
 

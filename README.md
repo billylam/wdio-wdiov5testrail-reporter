@@ -33,11 +33,12 @@ const testrailUtil = require('wdio-wdiov5testrail-reporter/lib');
       username: 'your testrail username',
       password: 'your testrail password (or api key)',
       projectId: your testrail project id,
-      suiteId: (optional) your suite id for a multi-suite project
-      title: (optional) name of your test run
-      runId: (optional) specific run id to use if updating an old run instead of creating a new run
+      suiteId: (optional) your suite id for a multi-suite project,
+      title: (optional) name of your test run,
+      runId: (optional) specific run id to use if updating an old run instead of creating a new run,
       useLatestRunId: (optional) true if updating latest run id instead of creating a new run,
-      version: (optional) version of api under test
+      version: (optional) version of api under test,
+      closeTestRailRun: (optional) close test run in Test Rail (if not set to true, test run will stay open)
     }],
   ],
 ```

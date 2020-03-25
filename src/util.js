@@ -81,6 +81,20 @@ module.exports.cleanup = function cleanup(config) {
       results,
     },
   });
+
+  //Close test run in test rail if option is set to true
+  if (options.closeTestRailRun === true) {
+    response = request('POST', `https://${options.domain}/index.php?/api/v2/close_run/${options.runId}`, {
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: auth,
+      },
+      json: {
+        results,
+      },
+    })
+  }
+  
   if (response.statusCode >= 300) console.error(response.getBody());
 
   return options.runId;

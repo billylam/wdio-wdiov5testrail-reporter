@@ -13,11 +13,14 @@ module.exports.startup = function startup() {
   });
 };
 module.exports.cleanup = function cleanup(config) {
+  const options = config.reporters.find((reporter) => reporter[0] === 'wdiov5testrail')[1];
+  const auth = `Basic ${Buffer.from(`${options.username}:${options.password}`).toString('base64')}`;
+
   const files = fs.readdirSync('./testrailResults');
   const results = [];
-  files.forEach(file => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
+  files.forEach((file) => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
   const passing = results.reduce((total, currentResult) => (currentResult.status_id === 1 ? total + 1 : total), 0);
-  const skipped = results.reduce((total, currentResult) => (currentResult.status_id === 4 ? total + 1 : total), 0);
+  const skipped = results.reduce((total, currentResult) => (currentResult.status_id === (options.skippedStatusId || 4) ? total + 1 : total), 0);
   const failing = results.reduce((total, currentResult) => (currentResult.status_id === 5 ? total + 1 : total), 0);
   const total = results.length;
   del.sync('./testrailResults');
@@ -27,9 +30,6 @@ module.exports.cleanup = function cleanup(config) {
   Fails: ${failing}
   Skipped: ${skipped}
   Total: ${total}`;
-
-  const options = config.reporters.find(reporter => reporter[0] === 'wdiov5testrail')[1];
-  const auth = `Basic ${Buffer.from(`${options.username}:${options.password}`).toString('base64')}`;
 
   let response;
   // Create a title using project name if no better title is specified
@@ -82,7 +82,7 @@ module.exports.cleanup = function cleanup(config) {
     },
   });
 
-  //Close test run in test rail if option is set to true
+  // Close test run in test rail if option is set to true
   if (options.closeTestRailRun === true) {
     response = request('POST', `https://${options.domain}/index.php?/api/v2/close_run/${options.runId}`, {
       headers: {
@@ -92,9 +92,9 @@ module.exports.cleanup = function cleanup(config) {
       json: {
         results,
       },
-    })
+    });
   }
-  
+
   if (response.statusCode >= 300) console.error(response.getBody());
 
   return options.runId;

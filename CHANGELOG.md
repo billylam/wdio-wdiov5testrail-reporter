@@ -1,4 +1,4 @@
-### 1.0.13 (2020-03-30)
+### 1.0.14 (2020-03-30)
 
 * Allow custom skipped status ids
 

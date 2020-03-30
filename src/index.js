@@ -28,7 +28,7 @@ class CustomReporter extends WDIOReporter {
         };
         if (this.options.version) result.version = this.options.version.toString();
         if (test.state === 'passed') result.status_id = 1;
-        else if (test.state === 'skipped') result.status_id = 4;
+        else if (test.state === 'skipped') result.status_id = this.options.skippedStatusId || 4;
         else result.status_id = 5;
         this.results.push(result);
 

@@ -1,3 +1,7 @@
+### 1.0.13 (2020-03-30)
+
+* Allow custom skipped status ids
+
 ### 1.0.12 (2020-03-25)
 
 * Merge PR for closeTestRailRun option (Thanks [@nemanjajeremic](https://github.com/nemanjajeremic))

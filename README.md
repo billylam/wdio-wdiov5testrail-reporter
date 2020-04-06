@@ -40,6 +40,7 @@ const testrailUtil = require('wdio-wdiov5testrail-reporter/lib');
       version: (optional) version of api under test,
       closeTestRailRun: (optional) close test run in Test Rail (if not set to true, test run will stay open)
       skippedStatusId: (optional) A custom status id assigned to skipped tests.  If not assigned, skipped tests will be marked as status 4 (Retest)
+      includeAll: (optional) Add all test cases, including ones not included in automation.  Defaults to true.
     }],
   ],
 ```

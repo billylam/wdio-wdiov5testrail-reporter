@@ -12,6 +12,7 @@ module.exports.startup = function startup() {
     if (fs.existsSync('./testrailResults')) del.sync('./testrailResults');
   });
 };
+
 module.exports.cleanup = function cleanup(config) {
   const options = config.reporters.find((reporter) => reporter[0] === 'wdiov5testrail')[1];
   const auth = `Basic ${Buffer.from(`${options.username}:${options.password}`).toString('base64')}`;
@@ -19,6 +20,7 @@ module.exports.cleanup = function cleanup(config) {
   const files = fs.readdirSync('./testrailResults');
   const results = [];
   files.forEach((file) => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
+  const case_ids = results.map((currentResult) => currentResult.case_id);
   const passing = results.reduce((total, currentResult) => (currentResult.status_id === 1 ? total + 1 : total), 0);
   const skipped = results.reduce((total, currentResult) => (currentResult.status_id === (options.skippedStatusId || 4) ? total + 1 : total), 0);
   const failing = results.reduce((total, currentResult) => (currentResult.status_id === 5 ? total + 1 : total), 0);
@@ -32,38 +34,36 @@ module.exports.cleanup = function cleanup(config) {
   Total: ${total}`;
 
   let response;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   // Create a title using project name if no better title is specified
   if (!options.title) {
-    response = request('GET', `https://${options.domain}/index.php?/api/v2/get_project/${options.projectId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: auth,
-      },
-    });
+    response = request('GET', `https://${options.domain}/index.php?/api/v2/get_project/${options.projectId}`, { headers });
     if (response.statusCode >= 300) console.error(JSON.parse(response.getBody()));
     options.title = `${JSON.parse(response.getBody()).name}: Automated Test Run`;
   }
 
+  // Use latest run if requested
   if (options.useLatestRunId === true) {
-    response = request('GET', `https://${options.domain}/index.php?/api/v2/get_runs/${options.projectId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: auth,
-      },
-    });
+    response = request('GET', `https://${options.domain}/index.php?/api/v2/get_runs/${options.projectId}`, { headers });
     options.runId = JSON.parse(response.getBody())[0].id;
   } else if (!options.runId) {
+    const json = {
+      name: options.title,
+      suite_id: options.suiteId,
+      description,
+    };
+    if (options.includeAll === false) {
+      json.include_all = false;
+      json.case_ids = case_ids;
+    }
     // Add a new test run if no run id was specified
     response = request('POST', `https://${options.domain}/index.php?/api/v2/add_run/${options.projectId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: auth,
-      },
-      json: {
-        name: options.title,
-        suite_id: options.suiteId,
-        description,
-      },
+      headers,
+      json,
     });
     if (response.statusCode >= 300) console.error(JSON.parse(response.getBody()));
     options.runId = JSON.parse(response.getBody()).id;
@@ -73,10 +73,7 @@ module.exports.cleanup = function cleanup(config) {
 
   // Add results
   response = request('POST', `https://${options.domain}/index.php?/api/v2/add_results_for_cases/${options.runId}`, {
-    headers: {
-      'Content-Type': 'application/json',
-      Authorization: auth,
-    },
+    headers,
     json: {
       results,
     },
@@ -85,10 +82,7 @@ module.exports.cleanup = function cleanup(config) {
   // Close test run in test rail if option is set to true
   if (options.closeTestRailRun === true) {
     response = request('POST', `https://${options.domain}/index.php?/api/v2/close_run/${options.runId}`, {
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: auth,
-      },
+      headers,
       json: {
         results,
       },

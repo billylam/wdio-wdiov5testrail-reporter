@@ -1,3 +1,9 @@
+### 1.0.15 (2020-04-11)
+
+* Allow include all option
+* Allow loose test case matching (report generated even if some test case ids don't match)
+* Allow multiple tests to be mapped to one case id
+
 ### 1.0.14 (2020-03-30)
 
 * Allow custom skipped status ids

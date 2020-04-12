@@ -17,27 +17,43 @@ module.exports.cleanup = function cleanup(config) {
   const options = config.reporters.find((reporter) => reporter[0] === 'wdiov5testrail')[1];
   const auth = `Basic ${Buffer.from(`${options.username}:${options.password}`).toString('base64')}`;
 
+  let response;
+  const headers = {
+    'Content-Type': 'application/json',
+    Authorization: auth,
+  };
+
   const files = fs.readdirSync('./testrailResults');
-  const results = [];
+  let results = [];
   files.forEach((file) => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
-  const case_ids = results.map((currentResult) => currentResult.case_id);
+  del.sync('./testrailResults');
+
+
+  if (options.strictCaseMatching && options.strictCaseMatching !== true) {
+    response = request('GET', `https://${options.domain}/index.php?/api/v2/get_cases/${options.projectId}${options.suiteId ? `&suite_id=${options.suiteId}` : ''}`, { headers });
+    const actualCaseIds = JSON.parse(response.getBody()).map((testCase) => testCase.id);
+    results = results.filter((result) => actualCaseIds.includes(Number.parseInt(result.case_id, 10)));
+  }
+
   const passing = results.reduce((total, currentResult) => (currentResult.status_id === 1 ? total + 1 : total), 0);
   const skipped = results.reduce((total, currentResult) => (currentResult.status_id === (options.skippedStatusId || 4) ? total + 1 : total), 0);
   const failing = results.reduce((total, currentResult) => (currentResult.status_id === 5 ? total + 1 : total), 0);
   const total = results.length;
-  del.sync('./testrailResults');
+
+  // If there are duplicate test cases
+  // Get failures and replace any matching successes
+  // For reporting purposes this should be done after stats are calculated
+  const testCaseIds = results.map((result) => result.case_id);
+  if (testCaseIds.length !== new Set(testCaseIds).size) {
+    const failures = results.filter((result) => result.status_id === 5).map((result) => result.case_id);
+    results = results.map((result) => (failures.includes(result.case_id) ? { case_id: result.case_id, status_id: 5 } : result));
+  }
 
   const description = `Execution summary:
   Passes: ${passing}
   Fails: ${failing}
   Skipped: ${skipped}
   Total: ${total}`;
-
-  let response;
-  const headers = {
-    'Content-Type': 'application/json',
-    Authorization: auth,
-  };
 
   // Create a title using project name if no better title is specified
   if (!options.title) {
@@ -58,7 +74,7 @@ module.exports.cleanup = function cleanup(config) {
     };
     if (options.includeAll === false) {
       json.include_all = false;
-      json.case_ids = case_ids;
+      json.case_ids = results.map((currentResult) => currentResult.case_id);
     }
     // Add a new test run if no run id was specified
     response = request('POST', `https://${options.domain}/index.php?/api/v2/add_run/${options.projectId}`, {

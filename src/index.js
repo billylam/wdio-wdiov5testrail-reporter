@@ -32,7 +32,7 @@ class CustomReporter extends WDIOReporter {
         else result.status_id = 5;
         this.results.push(result);
 
-        fs.writeFileSync(`./testrailResults/tc-${result.case_id}.json`, JSON.stringify(result));
+        fs.writeFileSync(`./testrailResults/tc-${result.case_id}-${Date.now()}.json`, JSON.stringify(result));
       }
     });
   }

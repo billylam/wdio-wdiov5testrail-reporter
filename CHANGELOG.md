@@ -1,4 +1,4 @@
-### 1.0.15 (2020-04-11)
+### 1.0.16 (2020-04-11)
 
 * Allow include all option
 * Allow loose test case matching (report generated even if some test case ids don't match)

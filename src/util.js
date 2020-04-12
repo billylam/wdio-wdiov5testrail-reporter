@@ -29,7 +29,7 @@ module.exports.cleanup = function cleanup(config) {
   del.sync('./testrailResults');
 
 
-  if (options.strictCaseMatching && options.strictCaseMatching !== true) {
+  if (options.strictCaseMatching !== undefined && options.strictCaseMatching !== true) {
     response = request('GET', `https://${options.domain}/index.php?/api/v2/get_cases/${options.projectId}${options.suiteId ? `&suite_id=${options.suiteId}` : ''}`, { headers });
     const actualCaseIds = JSON.parse(response.getBody()).map((testCase) => testCase.id);
     results = results.filter((result) => actualCaseIds.includes(Number.parseInt(result.case_id, 10)));

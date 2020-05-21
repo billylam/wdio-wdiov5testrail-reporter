@@ -7,8 +7,6 @@ class CustomReporter extends WDIOReporter {
   constructor(options) {
     super(options);
 
-    this.results = [];
-    this.comment = [];
     const requiredOptions = ['domain', 'username', 'password', 'projectId'];
     requiredOptions.forEach((requiredOption) => {
       if (!this.options[requiredOption]) throw new Error(`wdiov5testrail: Required reporter option "${requiredOption}" is not defined.`);
@@ -16,6 +14,11 @@ class CustomReporter extends WDIOReporter {
     this.options.auth = `Basic ${Buffer.from(`${this.options.username}:${this.options.password}`).toString('base64')}`;
 
     process.on('wdio-wdiov5testrail-reporter:addTestRailComment', this.addComment.bind(this));
+  }
+
+  onTestStart(test) {
+    this.results = [];
+    this.comment = [];
   }
 
   onTestEnd(test) {

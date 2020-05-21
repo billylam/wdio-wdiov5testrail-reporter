@@ -1,3 +1,7 @@
+### 1.0.18 (2020-05-21)
+
+* Fix a bug where logging is repeating for subsequent tests in single describe block.
+
 ### 1.0.17 (2020-05-20)
 
 * Add stack trace to TestRail comment for failing tests

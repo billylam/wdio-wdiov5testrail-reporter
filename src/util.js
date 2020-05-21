@@ -28,7 +28,6 @@ module.exports.cleanup = function cleanup(config) {
   files.forEach((file) => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
   del.sync('./testrailResults');
 
-
   if (options.strictCaseMatching !== undefined && options.strictCaseMatching !== true) {
     response = request('GET', `https://${options.domain}/index.php?/api/v2/get_cases/${options.projectId}${options.suiteId ? `&suite_id=${options.suiteId}` : ''}`, { headers });
     const actualCaseIds = JSON.parse(response.getBody()).map((testCase) => testCase.id);
@@ -46,7 +45,7 @@ module.exports.cleanup = function cleanup(config) {
   const testCaseIds = results.map((result) => result.case_id);
   if (testCaseIds.length !== new Set(testCaseIds).size) {
     const failures = results.filter((result) => result.status_id === 5).map((result) => result.case_id);
-    results = results.map((result) => (failures.includes(result.case_id) ? { case_id: result.case_id, status_id: 5 } : result));
+    results = results.map((result) => (failures.includes(result.case_id) ? { ...result, ...{ status_id: 5 } } : result));
   }
 
   const description = `Execution summary:

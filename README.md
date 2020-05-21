@@ -52,5 +52,15 @@ Include the letter C.
  it(`C123 Can load the page`, function() {}
 ```
 
+### (optional) Add additional logging with addTestRailComment
+
+```
+const { addTestRailComment } = require('wdio-wdiov5testrail-reporter').default;
+```
+
+```
+addTestRailComment('Will be added to test comment in TestRail');
+```
+
 ## Acknowledgement
 [@fijijavis]( https://github.com/fijijavis ) - his reporter provided a solution for compiling test results

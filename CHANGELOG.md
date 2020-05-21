@@ -1,3 +1,8 @@
+### 1.0.17 (2020-05-20)
+
+* Add stack trace to TestRail comment for failing tests
+* Allow method for adding to additional logging to TestRail comment
+
 ### 1.0.16 (2020-04-11)
 
 * Allow include all option

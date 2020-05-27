@@ -1,3 +1,7 @@
+### 1.0.19 (2020-05-26)
+
+* Ignore non-json files in ./testrailResults (e.g. .DS_Store)
+
 ### 1.0.18 (2020-05-21)
 
 * Fix a bug where logging is repeating for subsequent tests in single describe block.

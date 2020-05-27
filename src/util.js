@@ -25,7 +25,9 @@ module.exports.cleanup = function cleanup(config) {
 
   const files = fs.readdirSync('./testrailResults');
   let results = [];
-  files.forEach((file) => results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))));
+  files.forEach((file) => {
+    if (file.endsWith('json')) { results.push(JSON.parse(fs.readFileSync(`./testrailResults/${file}`, 'utf8'))); }
+  });
   del.sync('./testrailResults');
 
   if (options.strictCaseMatching !== undefined && options.strictCaseMatching !== true) {

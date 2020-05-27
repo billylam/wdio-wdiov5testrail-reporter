@@ -1,4 +1,4 @@
-### 1.0.19 (2020-05-26)
+### 1.0.20 (2020-05-26)
 
 * Ignore non-json files in ./testrailResults (e.g. .DS_Store)
 

@@ -1,3 +1,7 @@
+### 1.0.21 (2020-06-15)
+
+* Use seconds instead of milliseconds
+
 ### 1.0.20 (2020-05-26)
 
 * Ignore non-json files in ./testrailResults (e.g. .DS_Store)

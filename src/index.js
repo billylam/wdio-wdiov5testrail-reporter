@@ -30,7 +30,7 @@ class CustomReporter extends WDIOReporter {
       if (matches) {
         const result = {
           case_id: matches[1],
-          elapsed: `${(test._duration || 0.01) / 1000}s`,
+          elapsed: `${test._duration >= 1000 ? Math.round(test._duration / 1000) : 1}s`,
         };
         if (this.options.version) result.version = this.options.version.toString();
         if (test.state === 'passed') result.status_id = 1;

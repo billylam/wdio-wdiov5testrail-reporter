@@ -1,3 +1,7 @@
+### 1.0.22 (2020-07-07)
+
+* Fix issue with some skipped tests
+
 ### 1.0.21 (2020-06-15)
 
 * Use seconds instead of milliseconds

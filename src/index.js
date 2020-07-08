@@ -1,4 +1,3 @@
-
 const WDIOReporter = require('@wdio/reporter').default;
 const request = require('sync-request');
 const fs = require('fs');
@@ -9,14 +8,27 @@ class CustomReporter extends WDIOReporter {
 
     const requiredOptions = ['domain', 'username', 'password', 'projectId'];
     requiredOptions.forEach((requiredOption) => {
-      if (!this.options[requiredOption]) throw new Error(`wdiov5testrail: Required reporter option "${requiredOption}" is not defined.`);
+      if (!this.options[requiredOption])
+        throw new Error(
+          `wdiov5testrail: Required reporter option "${requiredOption}" is not defined.`,
+        );
     });
-    this.options.auth = `Basic ${Buffer.from(`${this.options.username}:${this.options.password}`).toString('base64')}`;
+    this.options.auth = `Basic ${Buffer.from(
+      `${this.options.username}:${this.options.password}`,
+    ).toString('base64')}`;
 
-    process.on('wdio-wdiov5testrail-reporter:addTestRailComment', this.addComment.bind(this));
+    process.on(
+      'wdio-wdiov5testrail-reporter:addTestRailComment',
+      this.addComment.bind(this),
+    );
   }
 
   onTestStart(test) {
+    this.results = [];
+    this.comment = [];
+  }
+
+  onTestSkip(test) {
     this.results = [];
     this.comment = [];
   }
@@ -30,19 +42,28 @@ class CustomReporter extends WDIOReporter {
       if (matches) {
         const result = {
           case_id: matches[1],
-          elapsed: `${test._duration >= 1000 ? Math.round(test._duration / 1000) : 1}s`,
+          elapsed: `${
+            // eslint-disable-next-line no-underscore-dangle
+            test._duration >= 1000 ? Math.round(test._duration / 1000) : 1
+          }s`,
         };
-        if (this.options.version) result.version = this.options.version.toString();
+        if (this.options.version)
+          result.version = this.options.version.toString();
         if (test.state === 'passed') result.status_id = 1;
-        else if (test.state === 'skipped') result.status_id = this.options.skippedStatusId || 4;
+        else if (test.state === 'skipped')
+          result.status_id = this.options.skippedStatusId || 4;
         else {
           result.status_id = 5;
-          if (test.error && test.error.stack) this.comment.unshift(test.error.stack);
+          if (test.error && test.error.stack)
+            this.comment.unshift(test.error.stack);
         }
         if (this.comment.length > 0) result.comment = this.comment.join('\n\n');
         this.results.push(result);
 
-        fs.writeFileSync(`./testrailResults/tc-${result.case_id}-${Date.now()}.json`, JSON.stringify(result));
+        fs.writeFileSync(
+          `./testrailResults/tc-${result.case_id}-${Date.now()}.json`,
+          JSON.stringify(result),
+        );
       }
     });
   }

@@ -1,3 +1,7 @@
+### 1.0.23 (2020-07-16)
+
+* Dependency update
+
 ### 1.0.22 (2020-07-07)
 
 * Fix issue with some skipped tests

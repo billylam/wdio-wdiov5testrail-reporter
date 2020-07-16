@@ -1,6 +1,6 @@
 {
   "name": "wdio-wdiov5testrail-reporter",
-  "version": "1.0.22",
+  "version": "1.0.23",
   "description": "TestRail reporter for WebdriverIO v5",
   "main": "src/index.js",
   "scripts": {
@@ -18,7 +18,7 @@
   "author": "Billy Lam",
   "license": "ISC",
   "dependencies": {
-    "@wdio/reporter": "^5.18.6",
+    "@wdio/reporter": "^5.22.4",
     "del": "^5.1.0",
     "sync-request": "^6.1.0"
   },
@@ -32,9 +32,9 @@
   "homepage": "https://github.com/billylam/wdio-wdiov5testrail-reporter#readme",
   "devDependencies": {
     "eslint": "^6.8.0",
-    "eslint-config-airbnb-base": "^14.1.0",
+    "eslint-config-airbnb-base": "^14.2.0",
     "eslint-config-prettier": "^6.11.0",
-    "eslint-plugin-import": "^2.20.1",
+    "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-prettier": "^3.1.4",
     "prettier": "^2.0.5"
   }

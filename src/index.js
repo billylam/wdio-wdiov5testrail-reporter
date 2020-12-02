@@ -33,6 +33,15 @@ class CustomReporter extends WDIOReporter {
     this.comment = [];
   }
 
+  onRunnerStart(test) {
+    this.capabilityGroup = this.options.createTestPlan
+      ? {
+          cid: Number.parseInt(test.cid.split('-')[0], 10),
+          browserName: test.sanitizedCapabilities,
+        }
+      : null;
+  }
+
   onTestEnd(test) {
     const strings = test.title.split(' ');
     const testCaseRegex = /\bC(\d+)\b/;
@@ -41,6 +50,7 @@ class CustomReporter extends WDIOReporter {
       const matches = string.match(testCaseRegex);
       if (matches) {
         const result = {
+          ...this.capabilityGroup,
           case_id: matches[1],
           elapsed: `${
             // eslint-disable-next-line no-underscore-dangle

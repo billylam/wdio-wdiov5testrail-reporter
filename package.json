@@ -1,7 +1,7 @@
 {
   "name": "wdio-wdiov5testrail-reporter",
-  "version": "1.0.23",
-  "description": "TestRail reporter for WebdriverIO v5",
+  "version": "1.0.24",
+  "description": "TestRail reporter for WebdriverIO v5 and v6",
   "main": "src/index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"

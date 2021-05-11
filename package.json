@@ -1,6 +1,6 @@
 {
   "name": "wdio-wdiov5testrail-reporter",
-  "version": "1.0.24",
+  "version": "1.0.25",
   "description": "TestRail reporter for WebdriverIO v5 and v6",
   "main": "src/index.js",
   "scripts": {

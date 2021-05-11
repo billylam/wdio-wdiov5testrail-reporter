@@ -1,3 +1,6 @@
+### 1.0.25 (2021-05-11)
+
+* Dependency update
 ### 1.0.24 (2020-12-01)
 
 * Option to create test plans

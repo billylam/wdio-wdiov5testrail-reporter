@@ -153,6 +153,8 @@ module.exports.cleanup = function cleanup(config) {
       if (options.includeAll === false) {
         json.include_all = false;
         json.case_ids = results.map((currentResult) => currentResult.case_id);
+        console.log('---------------------------------------- GOT HERE');
+        console.log(json.case_ids);
       }
       // Add a new test run if no run id was specified
       response = request(

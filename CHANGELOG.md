@@ -1,3 +1,8 @@
+### 1.0.27 (2021-08-13)
+
+* Dependency update
+
+
 ### 1.0.26 (2021-07-08)
 
 * Dependency update

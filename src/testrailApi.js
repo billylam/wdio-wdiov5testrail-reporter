@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 const request = require('sync-request');
 
 class TestRailApi {
@@ -49,12 +50,34 @@ class TestRailApi {
     return this.post(`close_run/${this.options.runId}`);
   }
 
+  // "As of February 26, 2021 the data structure returned by bulk GET API
+  // endpoints will change. These bulk endpoints will no longer return an array of all entities,
+  // but will instead return an object with additional pagination fields and an array of up to 250 entities."
+  //  -https://www.gurock.com/testrail/docs/api/reference/cases#getcases
+  /** *
+   * Unlike other methods in this class, returns an array of cases rather than a response object.
+   */
   getCases() {
-    return this.get(
-      `get_cases/${this.options.projectId}${
-        this.options.suiteId ? `&suite_id=${this.options.suiteId}` : ''
-      }`,
-    );
+    let cases = [];
+
+    const responseLinks = null;
+    let response = null;
+    let nextUrl = `get_cases/${this.options.projectId}${
+      this.options.suiteId ? `&suite_id=${this.options.suiteId}` : ''
+    }`;
+    do {
+      response = JSON.parse(this.get(nextUrl).getBody());
+      const currentCases = response.cases.map((testCase) => testCase.id);
+      cases = cases.concat(currentCases);
+
+      nextUrl = response._links.next
+        ? response._links.next.substring(
+            response._links.next.indexOf('get_cases'),
+          )
+        : null;
+    } while (nextUrl);
+
+    return cases;
   }
 
   addPlan() {

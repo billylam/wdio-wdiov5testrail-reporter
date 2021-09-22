@@ -1,3 +1,7 @@
+### 1.0.29 (2021-09-22)
+
+* Handle change to TestRail bulk api return cap
+
 ### 1.0.28 (2021-09-21)
 
 * Handle change to get_cases return data shape.  Also, refactor and move testrail api calls to own class.

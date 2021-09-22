@@ -65,10 +65,7 @@ module.exports.cleanup = function cleanup(config) {
       options.strictCaseMatching !== undefined &&
       options.strictCaseMatching !== true
     ) {
-      response = testrail.getCases();
-      const actualCaseIds = JSON.parse(response.getBody()).cases.map(
-        (testCase) => testCase.id,
-      );
+      const actualCaseIds = testrail.getCases();
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );

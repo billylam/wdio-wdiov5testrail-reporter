@@ -1,3 +1,7 @@
+### 1.0.28 (2021-09-21)
+
+* Handle change to get_cases return data shape.  Also, refactor and move testrail api calls to own class.
+
 ### 1.0.27 (2021-08-13)
 
 * Dependency update

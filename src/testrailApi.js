@@ -39,7 +39,7 @@ class TestRailApi {
   }
 
   getRuns() {
-    return this.get(`get_runs/${this.options.projectId}`);
+    return this.get(`get_runs/${this.options.projectId}&is_completed=0`);
   }
 
   getRun(runId) {

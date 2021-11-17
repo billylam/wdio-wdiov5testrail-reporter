@@ -110,7 +110,7 @@ module.exports.cleanup = function cleanup(config) {
     // Use latest run if requested
     if (options.useLatestRunId === true) {
       response = testrail.getRuns();
-      options.runId = JSON.parse(response.getBody())[0].id;
+      options.runId = JSON.parse(response.getBody()).runs[0].id;
     } else if (!options.runId || createTestPlan) {
       const json = {
         name: createTestPlan ? resultSet[0].browserName : options.title,

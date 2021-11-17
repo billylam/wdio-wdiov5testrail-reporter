@@ -1,3 +1,7 @@
+### 1.0.30 (2021-11-17)
+
+* Handle change to TestRail bulk api return cap
+
 ### 1.0.29 (2021-09-22)
 
 * Handle change to TestRail bulk api return cap

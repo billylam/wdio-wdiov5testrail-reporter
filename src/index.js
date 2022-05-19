@@ -52,6 +52,8 @@ class CustomReporter extends WDIOReporter {
         const result = {
           ...this.capabilityGroup,
           case_id: matches[1],
+          wdio_id: `uid:${test.uid}|cid:${test.cid}`,
+          start: test.start,
           elapsed: `${
             // eslint-disable-next-line no-underscore-dangle
             test._duration >= 1000 ? Math.round(test._duration / 1000) : 1

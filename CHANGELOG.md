@@ -1,6 +1,10 @@
+### 1.0.31 (2022-05-18)
+
+* Handle wdio retries
+
 ### 1.0.30 (2021-11-17)
 
-* Handle change to TestRail bulk api return cap
+* Fix bug with useLatestRunId
 
 ### 1.0.29 (2021-09-22)
 

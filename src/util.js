@@ -88,7 +88,20 @@ module.exports.cleanup = function cleanup(config) {
       0,
     );
     const total = results.length;
-    // If there are duplicate test cases
+
+    // If there are duplicate test cases, first account for wdio retries
+    //    by deduplicating by wdio cid/uid and taking only the newest test
+    const deduplicatedResults = new Map();
+    results.forEach((result) => {
+      if (
+        !deduplicatedResults.has(result.wdio_id) ||
+        deduplicatedResults.get(result.wdio_id).start < result.start
+      )
+        deduplicatedResults.set(result.wdio_id, result);
+    });
+
+    results = Array.from(deduplicatedResults.values());
+
     // Get failures and replace any matching successes
     // For reporting purposes this should be done after stats are calculated
     const testCaseIds = results.map((result) => result.case_id);
@@ -102,6 +115,7 @@ module.exports.cleanup = function cleanup(config) {
           : result,
       );
     }
+
     const description = `Execution summary:
     Passes: ${passing}
     Fails: ${failing}

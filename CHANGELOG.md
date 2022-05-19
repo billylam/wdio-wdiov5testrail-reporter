@@ -1,3 +1,7 @@
+### 1.0.32 (2022-05-19)
+
+* Fix bug with previous version (uniquely identify case with wdio uid, cid, as well as TestRail case_id)
+
 ### 1.0.31 (2022-05-18)
 
 * Handle wdio retries

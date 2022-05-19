@@ -52,7 +52,7 @@ class CustomReporter extends WDIOReporter {
         const result = {
           ...this.capabilityGroup,
           case_id: matches[1],
-          wdio_id: `uid:${test.uid}|cid:${test.cid}`,
+          wdio_id: `uid:${test.uid}|cid:${test.cid}|caseid:${matches[1]}`,
           start: test.start,
           elapsed: `${
             // eslint-disable-next-line no-underscore-dangle

@@ -31,6 +31,13 @@ module.exports.cleanup = function cleanup(config) {
   });
   del.sync('./testrailResults');
 
+  if (rawResults.length === 0) {
+    console.log(
+      '[wdio-wdiov5testrail-reporter] No results to publish in TestRail.',
+    );
+    return;
+  }
+
   let groupedResults = [];
   let createTestPlan = false;
   // If we have requested a test plan (cid and browserName present), group results

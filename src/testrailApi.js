@@ -42,8 +42,8 @@ class TestRailApi {
     return this.get(`get_runs/${this.options.projectId}&is_completed=0`);
   }
 
-  getRun(runId) {
-    return this.get(`get_run/${this.options.runId}`);
+  getRun(runId = this.options.runId) {
+    return this.get(`get_run/${runId}`);
   }
 
   closeTestrailRun() {
@@ -57,17 +57,28 @@ class TestRailApi {
   /** *
    * Unlike other methods in this class, returns an array of cases rather than a response object.
    */
-  getCases() {
+   getCases() {
     let cases = [];
-
-    const responseLinks = null;
+    const {
+      projectId, 
+      suiteId,
+      casesFieldFilter: filter
+    } = this.options;
     let response = null;
-    let nextUrl = `get_cases/${this.options.projectId}${
-      this.options.suiteId ? `&suite_id=${this.options.suiteId}` : ''
-    }`;
+    let nextUrl = `get_cases/${projectId}${suiteId ? `&suite_id=${suiteId}` : ''}`;
     do {
       response = JSON.parse(this.get(nextUrl).getBody());
-      const currentCases = response.cases.map((testCase) => testCase.id);
+      const currentCases = response.cases.filter((testCase) => {
+        if (filter && typeof filter === 'object'&& !Array.isArray(filter) && filter !== {}) {
+          const keys = Object.keys(filter);
+          for(let i = 0; i < keys.length; i = i + 1) {
+            if (testCase[keys[i]] !== filter[keys[i]]) {
+              return false;
+            }
+          }
+        }
+        return true;
+      }).map((testCase) => testCase.id);
       cases = cases.concat(currentCases);
 
       nextUrl = response._links.next
@@ -98,8 +109,8 @@ class TestRailApi {
     });
   }
 
-  addResults(runId, results) {
-    return this.post(`add_results_for_cases/${this.options.runId}`, {
+  addResults(runId = this.options.runId, results) {
+    return this.post(`add_results_for_cases/${runId}`, {
       results,
     });
   }

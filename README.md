@@ -59,7 +59,7 @@ const testrailUtil = require('wdio-wdiov5testrail-reporter/lib');
 | strictCaseMatching | false to NOT throw an error if a test case found is not apart of the suite.  Defaults to true. |
 | skippedStatusId | A custom status id assigned to skipped tests.  If not assigned, skipped tests will be marked as status 4. |
 | closeTestRailRun | true to close test run in Test Rail after tests are complete.  Defaults to false. | 
-| casesFieldFilter | A {key:value} object to filter cases added to the test run, e.g. {'priority_id': 1, 'type_id': 2}. Values should be taken from TestRails. Running with empty value or with missing `closeTestRailRun` option will return a full list of cases |
+| casesFieldFilter | A `{key: value}` object to filter cases added to the test run, e.g. `{'priority_id': 1, 'type_id': 2}`. Values should be taken from TestRails. Running with empty value or with missing `closeTestRailRun` option will return a full list of cases |
 
 ### Prefix all test assertions you wish to map with the test number.
 Include the letter C.

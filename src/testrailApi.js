@@ -57,7 +57,7 @@ class TestRailApi {
   /** *
    * Unlike other methods in this class, returns an array of cases rather than a response object.
    */
-   getCases() {
+  getCases() {
     let cases = [];
     const {
       projectId, 

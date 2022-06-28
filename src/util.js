@@ -1,6 +1,5 @@
 const fs = require('fs');
 const del = require('del');
-const request = require('sync-request');
 const TestRailApi = require('./testrailApi');
 
 module.exports.startup = function startup() {
@@ -66,13 +65,17 @@ module.exports.cleanup = function cleanup(config) {
     planId = JSON.parse(response.getBody()).id;
   }
 
+  // Fetching all cases based on provided options (casesFieldFilter)
+  // if casesFieldFilter is not provided all cases will be returned
+  const actualCaseIds = testrail.getCases();
+  
   groupedResults.forEach((resultSet) => {
     let results = [...resultSet];
     if (
       options.strictCaseMatching !== undefined &&
       options.strictCaseMatching !== true
     ) {
-      const actualCaseIds = testrail.getCases();
+      
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
@@ -133,11 +136,15 @@ module.exports.cleanup = function cleanup(config) {
       response = testrail.getRuns();
       options.runId = JSON.parse(response.getBody()).runs[0].id;
     } else if (!options.runId || createTestPlan) {
+      // will include all actual cases fetched above
       const json = {
         name: createTestPlan ? resultSet[0].browserName : options.title,
         suite_id: options.suiteId,
         description,
+        include_all: false,
+        case_ids: actualCaseIds
       };
+      // will include only cases with results
       if (options.includeAll === false) {
         json.include_all = false;
         json.case_ids = results.map((currentResult) => currentResult.case_id);

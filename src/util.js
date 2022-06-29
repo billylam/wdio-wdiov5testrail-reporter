@@ -71,7 +71,8 @@ module.exports.cleanup = function cleanup(config) {
     let results = [...resultSet];
     if (
       options.strictCaseMatching !== undefined &&
-      options.strictCaseMatching !== true
+      options.strictCaseMatching !== true ||
+      options.casesFieldFilter
     ) {
       actualCaseIds = testrail.getCases();
       results = resultSet.filter((result) =>
@@ -144,13 +145,7 @@ module.exports.cleanup = function cleanup(config) {
       if (options.includeAll === false) {
         json.include_all = false;
         if (options.casesFieldFilter) {
-          if (!actualCaseIds.length) {
-            // fetch filtered list of cases
-            actualCaseIds = testrail.getCases();
-          }
           json.case_ids = actualCaseIds;
-          // leave only results for filtered cases
-          results = resultSet.filter(result => actualCaseIds.includes(Number.parseInt(result.case_id, 10)));
         } else {
           json.case_ids = results.map((currentResult) => currentResult.case_id);
         }

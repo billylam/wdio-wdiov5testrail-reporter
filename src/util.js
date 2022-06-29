@@ -135,16 +135,15 @@ module.exports.cleanup = function cleanup(config) {
       response = testrail.getRuns();
       options.runId = JSON.parse(response.getBody()).runs[0].id;
     } else if (!options.runId || createTestPlan) {
-      // will include all actual cases fetched above
       const json = {
         name: createTestPlan ? resultSet[0].browserName : options.title,
         suite_id: options.suiteId,
         description
       };
-      // will include only cases with results
       if (options.includeAll === false) {
         json.include_all = false;
         if (options.casesFieldFilter) {
+          // including only filtered cases
           json.case_ids = actualCaseIds;
         } else {
           json.case_ids = results.map((currentResult) => currentResult.case_id);

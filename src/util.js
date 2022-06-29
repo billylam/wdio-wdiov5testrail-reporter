@@ -65,7 +65,7 @@ module.exports.cleanup = function cleanup(config) {
     planId = JSON.parse(response.getBody()).id;
   }
   
-  const actualCaseIds = [];
+  let actualCaseIds = [];
   
   groupedResults.forEach((resultSet) => {
     let results = [...resultSet];
@@ -144,8 +144,13 @@ module.exports.cleanup = function cleanup(config) {
       if (options.includeAll === false) {
         json.include_all = false;
         if (options.casesFieldFilter) {
-          // taking actualCaseIds in case if it has been already fetched or fetch filtered list of cases
-          json.case_ids = actualCaseIds.length ? actualCaseIds : testrail.getCases();
+          if (!actualCaseIds.length) {
+            // fetch filtered list of cases
+            actualCaseIds = testrail.getCases();
+          }
+          json.case_ids = actualCaseIds;
+          // leave only results for filtered cases
+          results = resultSet.filter(result => actualCaseIds.includes(Number.parseInt(result.case_id, 10)));
         } else {
           json.case_ids = results.map((currentResult) => currentResult.case_id);
         }

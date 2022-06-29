@@ -64,10 +64,8 @@ module.exports.cleanup = function cleanup(config) {
     response = testrail.addPlan();
     planId = JSON.parse(response.getBody()).id;
   }
-
-  // Fetching all cases based on provided options (casesFieldFilter)
-  // if casesFieldFilter is not provided all cases will be returned
-  const actualCaseIds = testrail.getCases();
+  
+  const actualCaseIds = [];
   
   groupedResults.forEach((resultSet) => {
     let results = [...resultSet];
@@ -75,7 +73,7 @@ module.exports.cleanup = function cleanup(config) {
       options.strictCaseMatching !== undefined &&
       options.strictCaseMatching !== true
     ) {
-      
+      actualCaseIds = testrail.getCases();
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
@@ -140,14 +138,17 @@ module.exports.cleanup = function cleanup(config) {
       const json = {
         name: createTestPlan ? resultSet[0].browserName : options.title,
         suite_id: options.suiteId,
-        description,
-        include_all: false,
-        case_ids: actualCaseIds
+        description
       };
       // will include only cases with results
       if (options.includeAll === false) {
         json.include_all = false;
-        json.case_ids = results.map((currentResult) => currentResult.case_id);
+        if (options.casesFieldFilter) {
+          // taking actualCaseIds in case if it has been already fetched or fetch filtered list of cases
+          json.case_ids = actualCaseIds.length ? actualCaseIds : testrail.getCases();
+        } else {
+          json.case_ids = results.map((currentResult) => currentResult.case_id);
+        }
       }
       // Add a new test run if no run id was specified
       response = createTestPlan

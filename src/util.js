@@ -1,6 +1,5 @@
 const fs = require('fs');
 const del = require('del');
-const request = require('sync-request');
 const TestRailApi = require('./testrailApi');
 
 module.exports.startup = function startup() {
@@ -65,14 +64,17 @@ module.exports.cleanup = function cleanup(config) {
     response = testrail.addPlan();
     planId = JSON.parse(response.getBody()).id;
   }
-
+  
+  let actualCaseIds = [];
+  
   groupedResults.forEach((resultSet) => {
     let results = [...resultSet];
     if (
       options.strictCaseMatching !== undefined &&
-      options.strictCaseMatching !== true
+      options.strictCaseMatching !== true ||
+      options.casesFieldFilter
     ) {
-      const actualCaseIds = testrail.getCases();
+      actualCaseIds = testrail.getCases();
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
@@ -136,11 +138,16 @@ module.exports.cleanup = function cleanup(config) {
       const json = {
         name: createTestPlan ? resultSet[0].browserName : options.title,
         suite_id: options.suiteId,
-        description,
+        description
       };
       if (options.includeAll === false) {
         json.include_all = false;
-        json.case_ids = results.map((currentResult) => currentResult.case_id);
+        if (options.casesFieldFilter) {
+          // including only filtered cases
+          json.case_ids = actualCaseIds;
+        } else {
+          json.case_ids = results.map((currentResult) => currentResult.case_id);
+        }
       }
       // Add a new test run if no run id was specified
       response = createTestPlan

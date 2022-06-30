@@ -58,7 +58,8 @@ const testrailUtil = require('wdio-wdiov5testrail-reporter/lib');
 | includeAll | true to include all tests in run, regardless of whether actually run by Webdriver.io.  Defaults to true. |
 | strictCaseMatching | false to NOT throw an error if a test case found is not apart of the suite.  Defaults to true. |
 | skippedStatusId | A custom status id assigned to skipped tests.  If not assigned, skipped tests will be marked as status 4. |
-| closeTestRailRun: | true to close test run in Test Rail after tests are complete.  Defaults to false. | 
+| closeTestRailRun | true to close test run in Test Rail after tests are complete.  Defaults to false. | 
+| casesFieldFilter | A `{key: value}` object to filter cases added to the test run, e.g. `{'priority_id': 1, 'type_id': 2}`. Values should be taken from TestRails. Running with empty value or with missing `closeTestRailRun` option will return a full list of cases. `NOTE 1: if you use multiple key:value pairs in the filter object it will work as AND conditions.` `NOTE 2: casesFieldFilter takes into account only if includeAll=false`|
 
 ### Prefix all test assertions you wish to map with the test number.
 Include the letter C.

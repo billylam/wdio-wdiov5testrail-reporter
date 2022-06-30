@@ -1,3 +1,11 @@
+### 1.0.34 (2022-06-30)
+
+* Merge PR to filter included tests
+
+### 1.0.33 (2022-06-30)
+
+* Fix error output if no test cases are found
+
 ### 1.0.32 (2022-05-19)
 
 * Fix bug with previous version (uniquely identify case with wdio uid, cid, as well as TestRail case_id)
@@ -21,7 +29,6 @@
 ### 1.0.27 (2021-08-13)
 
 * Dependency update
-
 
 ### 1.0.26 (2021-07-08)
 

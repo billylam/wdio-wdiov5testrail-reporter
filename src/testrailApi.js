@@ -91,6 +91,26 @@ class TestRailApi {
     return cases;
   }
 
+  getCasesFromTestRun() {
+    let cases = [];
+
+    let response = null;
+    let nextUrl = `get_tests/${this.options.runId}`;
+    do {
+      response = JSON.parse(this.get(nextUrl).getBody());
+      const currentCases = response.tests.map((testCase) => testCase.case_id);
+      cases = cases.concat(currentCases);
+
+      nextUrl = response._links.next
+        ? response._links.next.substring(
+            response._links.next.indexOf('get_tests'),
+          )
+        : null;
+    } while (nextUrl);
+
+    return cases;
+  }
+
   addPlan() {
     return this.post(`add_plan/${this.options.projectId}`, {
       name: this.options.title,

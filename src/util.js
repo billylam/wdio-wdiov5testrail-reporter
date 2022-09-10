@@ -64,9 +64,9 @@ module.exports.cleanup = function cleanup(config) {
     response = testrail.addPlan();
     planId = JSON.parse(response.getBody()).id;
   }
-  
+
   let actualCaseIds = [];
-  
+
   groupedResults.forEach((resultSet) => {
     let results = [...resultSet];
     if (
@@ -74,7 +74,11 @@ module.exports.cleanup = function cleanup(config) {
       options.strictCaseMatching !== true ||
       options.casesFieldFilter
     ) {
-      actualCaseIds = testrail.getCases();
+      if (options.runId === undefined) {
+        actualCaseIds = testrail.getCases();
+      } else {
+        actualCaseIds = testrail.getCasesFromTestRun();
+      }
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );

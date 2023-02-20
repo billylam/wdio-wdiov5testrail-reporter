@@ -82,6 +82,19 @@ module.exports.cleanup = function cleanup(config) {
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
+    } else if (options.strictCaseMatching === true) {
+      actualCaseIds = testrail.getCases();
+      results = resultSet.filter((result) =>
+        actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
+      );
+
+      const invalidFilteredTests = resultSet.filter((result) =>
+        !actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
+      );
+
+      let invalidTestCases = [];
+      invalidFilteredTests.forEach(result => invalidTestCases.push(result.case_id));
+      console.log(`Invalid Test Cases - ${invalidTestCases}`);
     }
     const passing = results.reduce(
       (total, currentResult) =>

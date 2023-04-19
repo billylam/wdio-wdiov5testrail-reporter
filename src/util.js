@@ -83,7 +83,11 @@ module.exports.cleanup = function cleanup(config) {
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
     } else if (options.strictCaseMatching === true) {
-      actualCaseIds = testrail.getCases();
+      if (options.runId === undefined) {
+        actualCaseIds = testrail.getCases();
+      } else {
+        actualCaseIds = testrail.getCasesFromTestRun();
+      }
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );

@@ -82,6 +82,12 @@ module.exports.cleanup = function cleanup(config) {
       results = resultSet.filter((result) =>
         actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
+
+      const invalidFilteredTests = resultSet.filter((result) =>
+        !actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
+      );
+
+      if (invalidFilteredTests.length > 0) console.log(`Invalid Test Cases - ${invalidFilteredTests.map(test => test.case_id)}`);
     }
     const passing = results.reduce(
       (total, currentResult) =>

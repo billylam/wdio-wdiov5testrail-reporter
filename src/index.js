@@ -44,7 +44,7 @@ class CustomReporter extends WDIOReporter {
 
   onTestEnd(test) {
     const strings = test.title.split(' ');
-    const testCaseRegex = /\bC(\d+)\b/;
+    const testCaseRegex = /\bC(\d+)\b/i;
 
     strings.forEach((string) => {
       const matches = string.match(testCaseRegex);

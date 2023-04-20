@@ -1,3 +1,7 @@
+### 1.0.36 (2023-04-20)
+
+* Merge PR to log cases that fail strictCaseMatching.
+
 ### 1.0.35 (2022-09-10)
 
 * Merge PR to have strictCaseMatching option pull cases from TestRail when runId is specified.

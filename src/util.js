@@ -87,9 +87,7 @@ module.exports.cleanup = function cleanup(config) {
         !actualCaseIds.includes(Number.parseInt(result.case_id, 10)),
       );
 
-      let invalidTestCases = [];
-      invalidFilteredTests.forEach(result => invalidTestCases.push(result.case_id));
-      console.log(`Invalid Test Cases - ${invalidTestCases}`);
+      if (invalidFilteredTests.length > 0) console.log(`Invalid Test Cases - ${invalidFilteredTests.map(test => test.case_id)}`);
     }
     const passing = results.reduce(
       (total, currentResult) =>

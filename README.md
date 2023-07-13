@@ -1,3 +1,5 @@
+# If you are using v8+, please use the official package at https://www.npmjs.com/package/@wdio/testrail-reporter
+
 # wdio-wdiov5testrail-reporter
 
 TestRail reporter for versions 5 and 6 of WebdriverIO

@@ -1,3 +1,7 @@
+### 1.0.37 (2023-07-13)
+
+* Update readme with link to official package for v8+
+
 ### 1.0.36 (2023-04-20)
 
 * Merge PR to log cases that fail strictCaseMatching.
